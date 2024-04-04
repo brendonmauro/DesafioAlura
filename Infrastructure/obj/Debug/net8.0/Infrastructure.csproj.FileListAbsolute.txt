@@ -1,0 +1,15 @@
+C:\Users\bmauro\Documents\DesafioA\Infrastructure\obj\Debug\net8.0\Infrastructure.csproj.AssemblyReference.cache
+C:\Users\bmauro\Documents\DesafioA\Infrastructure\obj\Debug\net8.0\Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\bmauro\Documents\DesafioA\Infrastructure\obj\Debug\net8.0\Infrastructure.AssemblyInfoInputs.cache
+C:\Users\bmauro\Documents\DesafioA\Infrastructure\obj\Debug\net8.0\Infrastructure.AssemblyInfo.cs
+C:\Users\bmauro\Documents\DesafioA\Infrastructure\obj\Debug\net8.0\Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\bmauro\Documents\DesafioA\Infrastructure\bin\Debug\net8.0\selenium-manager\linux\selenium-manager
+C:\Users\bmauro\Documents\DesafioA\Infrastructure\bin\Debug\net8.0\selenium-manager\macos\selenium-manager
+C:\Users\bmauro\Documents\DesafioA\Infrastructure\bin\Debug\net8.0\selenium-manager\windows\selenium-manager.exe
+C:\Users\bmauro\Documents\DesafioA\Infrastructure\bin\Debug\net8.0\Infrastructure.deps.json
+C:\Users\bmauro\Documents\DesafioA\Infrastructure\bin\Debug\net8.0\Infrastructure.dll
+C:\Users\bmauro\Documents\DesafioA\Infrastructure\bin\Debug\net8.0\Infrastructure.pdb
+C:\Users\bmauro\Documents\DesafioA\Infrastructure\obj\Debug\net8.0\Infrastructure.dll
+C:\Users\bmauro\Documents\DesafioA\Infrastructure\obj\Debug\net8.0\refint\Infrastructure.dll
+C:\Users\bmauro\Documents\DesafioA\Infrastructure\obj\Debug\net8.0\Infrastructure.pdb
+C:\Users\bmauro\Documents\DesafioA\Infrastructure\obj\Debug\net8.0\ref\Infrastructure.dll

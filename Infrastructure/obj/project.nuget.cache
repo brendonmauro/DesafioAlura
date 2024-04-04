@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "oajksFCjM4V23yC406BinWKKgbYnIE1IVPV/YNia7VsU4OXVgBKKuePGzWO5X6KH37KPOyh84snqVUmFSNWBqg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\bmauro\\Documents\\DesafioA\\DesafioAlura\\Infrastructure\\Infrastructure.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\bmauro\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\bmauro\\.nuget\\packages\\selenium.support\\4.19.0\\selenium.support.4.19.0.nupkg.sha512",
+    "C:\\Users\\bmauro\\.nuget\\packages\\selenium.webdriver\\4.19.0\\selenium.webdriver.4.19.0.nupkg.sha512"
+  ],
+  "logs": []
+}
