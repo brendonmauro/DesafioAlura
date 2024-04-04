@@ -33,23 +33,38 @@ Abaixo os scripts necessários para o banco de dados:
 CREATE DATABASE desafioalura;
 
 -- Após criado o banco de dados, conectar no mesmo e criar as tabelas do projeto
+
 CREATE TABLE item_result (
+
   id SERIAL PRIMARY KEY,
+  
   titulo VARCHAR(400) NOT NULL,
+  
   professor VARCHAR(255) NOT NULL,
+  
   carga_horaria integer NOT NULL,
+  
   descricao VARCHAR(2000) NOT NULL,	
+  
   date TIMESTAMP
+  
 );
 
+
 CREATE TABLE log (
+
   id SERIAL PRIMARY KEY,
+  
   text VARCHAR(1000) NOT NULL,
+  
   date TIMESTAMP
+  
 );
 
 -- Após fazer testes no projeto, podemos consultar os dados através das consultas abaixo.
+
 SELECT * FROM item_result;
+
 SELECT * FROM log;
 
 
