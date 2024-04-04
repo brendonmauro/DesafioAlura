@@ -8,5 +8,6 @@ namespace Domain.Interfaces
 {
     public interface IItemInput
     {
+        public string TextInput { get; set; }
     }
 }
