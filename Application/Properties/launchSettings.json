@@ -2,7 +2,7 @@
   "profiles": {
     "Application": {
       "commandName": "Project",
-      "commandLineArgs": "rpa"
+      "commandLineArgs": "rpa dba datascience qualquer qerasd"
     }
   }
 }

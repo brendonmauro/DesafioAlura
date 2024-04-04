@@ -28,63 +28,80 @@ namespace Infrastructure
 
         protected override IEnumerable<IItemResult> GettingData(IItemInput itemInput)
         {
-            SearchResults(itemInput);
-            var cards = GetCardsInformation();
-
-            var items = new List<IItemResult>();
-            foreach (var card in cards)
+            try
             {
-                items.Add(CatchResult(card));
-            }
-            return items;
+                SearchResults(itemInput);
+                var cards = GetCardsInformation();
+
+                var items = new List<IItemResult>();
+                foreach (var card in cards)
+                {
+                    items.Add(CatchResult(card));
+                }
+                return items;
+            } catch (Exception ex) { throw new Exception("Erro ao pegar as informacoes do curso: " + ex.Message); }
         }
 
         private void SearchResults(IItemInput itemInput)
         {
-            var inputField = _driver.FindElement(By.Id("header-barraBusca-form-campoBusca"));
-            inputField.SendKeys(itemInput.TextInput);
-            var buttonSearch = _driver.FindElement(By.ClassName("header__nav--busca-submit"));
-            buttonSearch.Submit();
+            try
+            {
+                var inputField = _driver.FindElement(By.Id("header-barraBusca-form-campoBusca"));
+                inputField.SendKeys(itemInput.TextInput);
+                var buttonSearch = _driver.FindElement(By.ClassName("header__nav--busca-submit"));
+                buttonSearch.Submit();
 
-            var buttonShowOptions = _driver.FindElement(By.ClassName("show-filter-options"));
-            buttonShowOptions.Click();
+                var buttonShowOptions = _driver.FindElement(By.ClassName("show-filter-options"));
+                buttonShowOptions.Click();
 
-            var buttonCurso = _driver.FindElement(By.CssSelector("ul[id*=busca--filtros--tipos] li"));
-            buttonCurso.Click();
+                var buttonCurso = _driver.FindElement(By.CssSelector("ul[id*=busca--filtros--tipos] li"));
+                buttonCurso.Click();
 
-            var buttonFiltrar = _driver.FindElement(By.Id("busca--filtrar-resultados"));
-            buttonFiltrar.Click();
+                var buttonFiltrar = _driver.FindElement(By.Id("busca--filtrar-resultados"));
+                buttonFiltrar.Click();
+            } catch (Exception ex)
+            {
+                throw new Exception("Erro ao pesquisar o termo: " + ex.Message);
+            }
         }
 
         private IEnumerable<ItemCard> GetCardsInformation()
         {
-            var cards = _driver.FindElements(By.ClassName("busca-resultado"));
-
-            return cards.Select(card => new ItemCard
+            try
             {
-                Link = card.FindElement(By.ClassName("busca-resultado-link"))?.GetAttribute("href") ?? string.Empty,
-                Titulo = card.FindElement(By.ClassName("busca-resultado-nome"))?.Text ?? string.Empty,
-                Descricao = card.FindElement(By.ClassName("busca-resultado-descricao"))?.Text ?? string.Empty
-            });
+                var cards = _driver.FindElements(By.ClassName("busca-resultado"));
+
+                 var itemCards = cards.Select(card => new ItemCard
+                {
+                    Link = card.FindElement(By.ClassName("busca-resultado-link"))?.GetAttribute("href") ?? string.Empty,
+                    Titulo = card.FindElement(By.ClassName("busca-resultado-nome"))?.Text ?? string.Empty,
+                    Descricao = card.FindElement(By.ClassName("busca-resultado-descricao"))?.Text ?? string.Empty
+                });
+
+                return itemCards;
+            } catch (Exception ex) { throw new Exception("Erro ao pegar informações os cards dos resultados: " + ex.Message); }
         }
 
         private IItemResult CatchResult(ItemCard card)
         {
-            _driver.Navigate().GoToUrl(card.Link);
-
-            var cargaHorariaText = _driver.FindElement(By.ClassName("course-card-wrapper-infos")).Text ?? "0";
-
-            IItemResult itemResult = new ItemResult
+            try
             {
-                Titulo = card.Titulo,
-                Professor = _driver.FindElement(By.ClassName("instructor-title--name"))?.Text ?? string.Empty,
-                CargaHoraria = Convert.ToInt32(Regex.Replace(cargaHorariaText, "[^0-9]", "")),
-                Descricao = card.Descricao
-            };
-            _driver.Navigate().Back();
+                _driver.Navigate().GoToUrl(card.Link);
+
+                var cargaHorariaText = _driver.FindElement(By.ClassName("course-card-wrapper-infos")).Text ?? "0";
+
+                IItemResult itemResult = new ItemResult
+                {
+                    Titulo = card.Titulo,
+                    Professor = _driver.FindElement(By.ClassName("instructor-title--name"))?.Text ?? string.Empty,
+                    CargaHoraria = Convert.ToInt32(Regex.Replace(cargaHorariaText, "[^0-9]", "")),
+                    Descricao = card.Descricao
+                };
+                _driver.Navigate().Back();
 
 
-            return itemResult;
+                return itemResult;
+            } catch (Exception ex) { throw new Exception("Erro ao passar as informacoes para o objeto: " + ex.Message); }
         }
     }
 }

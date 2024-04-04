@@ -3,6 +3,6 @@
     public interface ISeleniumService
     {
         void GetSelenium(string url);
-        void DoWork(string[] args);
+        void DoWork(int tx, string arg);
     }
 }

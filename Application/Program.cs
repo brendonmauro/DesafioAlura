@@ -1,21 +1,15 @@
-﻿using Infrastructure;
-using Infrastructure.Interfaces;
+﻿using Application;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-namespace Application
-{
-    public class Program
+var host = Host.CreateDefaultBuilder(args)
+    .ConfigureServices((hostContext, services) =>
     {
-        public static void Main(string[] args)
-        {
-            try
-            {
-                ISeleniumService _seleniumService = new AluraService();
-                _seleniumService.DoWork(args);
-            } catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            
-        }
-    }
-}
+        IConfiguration configuration = hostContext.Configuration;
+        services.AddSingleton<string[]>(args);
+        services.AddHostedService<Worker>();
+    })
+    .Build();
+
+host.Run();

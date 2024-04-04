@@ -4,11 +4,6 @@ using Infrastructure.Interfaces;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure
 {
@@ -27,26 +22,22 @@ namespace Infrastructure
             _driver = new ChromeDriver(options);
         }
 
-        public void DoWork(string[] args)
+        public void DoWork(int tx, string item)
         {
             try
             {
                 this.GetSelenium(_url);
-                foreach (var item in args)
-                {
-                    IItemInput itemInput = this.CreateInput(item);
-                    this.NavigateToInitialPage();
-                    IEnumerable<IItemResult> itemsResult = this.GettingData(itemInput);
-                    this.MakePersistence(itemsResult);
-                }
+                IItemInput itemInput = this.CreateInput(item);
+                this.NavigateToInitialPage();
+                IEnumerable<IItemResult> itemsResult = this.GettingData(itemInput);
+                this.MakePersistence(itemsResult);
                 
             } catch (Exception ex)
             {
-                SaveLog(ex.Message);
+                SaveLog($"Thread {tx} método DoWork: " + ex.Message);
             } finally
             {
                 FinishWork();
-
             }
         }
 
@@ -79,8 +70,8 @@ namespace Infrastructure
             {
                 LogPersistence logPersistence = new();
                 logPersistence.Insert(new Log(message));
-            } catch (Exception ex) { throw new Exception(ex.Message); }
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
         }
-
     }
 }
