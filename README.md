@@ -69,6 +69,7 @@ SELECT * FROM log;
 
 
 # Sobre o Código
+Busquei desenvolver o projeto de forma simples para solucionar o problema, enquanto ainda seguia alguns princípios do Domain-Driven Design (DDD) e garantia sua escalabilidade. Com o passar do tempo, pude aprimorar diversos aspectos do projeto, o que só foi possível devido a uma implementação correta desde o início.
 
 No que diz respeito à manipulação de threads, julguei desnecessário aplicá-las no 
 processo de coleta e escrita de dados, uma vez que se trata de um fluxo singular. Optei, 
@@ -79,11 +80,10 @@ A estrutura do projeto foi concebida de maneira simplificada em poucas camadas,
 considerando a natureza do projeto, que não demandava grande complexidade. A 
 camada "application" é responsável pela execução do console, com a classe principal 
 sendo o "Worker", que contém o método "ExecuteAsync". Este método estabelece a 
-estrutura para a execução com threads, chamando o método "DoWork".
+estrutura para a execução com threads, chamando o método "DoWork" do serviço.
 
-O método "DoWork" representa essencialmente o fluxo principal do robô em cada aba. 
-Cada etapa desse fluxo foi separada em métodos dentro da classe "DoWork". 
-
+O método "DoWork" representa essencialmente o fluxo principal do serviço. 
+Cada etapa desse fluxo foi separada em métodos no serviço utilizado pelo Worker". 
 
 # Abordagem DDD
 Desenvolver um projeto em C# utilizando Selenium e respeitando os princípios do Domain-Driven Design (DDD) é uma boa prática para garantir a organização, manutenibilidade e escalabilidade do código.
@@ -101,10 +101,15 @@ Persistence: Camada de acesso a dados que contém as implementações dos reposi
 No contexto do Domain-Driven Design (DDD), a separação em camadas é fundamental para manter o princípio de Single Responsibility, que busca garantir que cada classe ou componente tenha apenas uma razão para mudar. A separação em camadas ajuda a isolar o domínio das outras implementações, como infraestrutura e apresentação, permitindo que cada camada se concentre em suas responsabilidades específicas.
 
 # Injeção de dependência
+A implementação específica pode variar dependendo das necessidades e complexidade do seu projeto. No entanto, seguindo esses passos básicos, você pode criar uma aplicação usando a abordagem DDD com injeção de dependência em C#.
+
+
+Um exemplo prático de injeção de dependência envolve a configuração de um serviço de escopo, como o AluraService, na classe Program. Em seguida, essa dependência é injetada no worker. Além disso, parâmetros específicos para a execução do projeto podem ser passados como argumentos (args) que também são injetados para serem utilizados no projeto.
+
+
 
 # Tratamento dos Erros
 Foram implementados tratamentos extensivos, sendo o foco direcionado principalmente à 
 geração de logs. A presença de logs de erro é crucial para a manutenção do robô, 
 facilitando a detecção do local e motivo de possíveis falhas.
 
-# Fluxo da aplicação
