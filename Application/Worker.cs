@@ -8,12 +8,14 @@ namespace Application
 {
     public class Worker : BackgroundService
     {
-        private readonly int _qtdThreads = 1;
+        private readonly int _qtdThreads = 2;
+        private ISeleniumService _seleniumService;
         private string[] _args;
 
 
-        public Worker(string[] args)
+        public Worker(ISeleniumService seleniumService, string[] args)
         {
+            _seleniumService = seleniumService;
             _args = args;
         }
 
@@ -21,7 +23,7 @@ namespace Application
         {
             var queue = new Queue<string>(_args);
 
-            while (!stoppingToken.IsCancellationRequested)
+            if (!stoppingToken.IsCancellationRequested)
             {
                 try
                 {
@@ -36,7 +38,6 @@ namespace Application
                             tasks[i] = Task.Factory.StartNew(() =>
                             {
                                 Thread.CurrentThread.Priority = ThreadPriority.Highest;
-                                ISeleniumService _seleniumService = new AluraService();
                                 _seleniumService.DoWork(i, term);
                             });
                         }
@@ -51,6 +52,7 @@ namespace Application
                 }
 
                 await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
+                
             }
         }
     }

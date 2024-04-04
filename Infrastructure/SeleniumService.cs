@@ -9,53 +9,63 @@ namespace Infrastructure
 {
     public abstract class SeleniumService : ISeleniumService
     {
-        private string _url;
-        public WebDriver _driver;
-
-        public void GetSelenium(string url)
-        {
-            _url = url;
-
-            ChromeOptions options = new ChromeOptions();
-            options.AddArguments("--disable-notifications");
-
-            _driver = new ChromeDriver(options);
-        }
+        public string _url;
 
         public void DoWork(int tx, string item)
         {
+            IWebDriver driver = this.InicializarDriver();
             try
             {
-                this.GetSelenium(_url);
-                IItemInput itemInput = this.CreateInput(item);
-                this.NavigateToInitialPage();
-                IEnumerable<IItemResult> itemsResult = this.GettingData(itemInput);
-                this.MakePersistence(itemsResult);
+                IItemInput itemInput = this.CreateInput(item, driver);
+                this.NavigateToInitialPage(driver);
+                IEnumerable<IItemResult> itemsResult = this.GettingData(itemInput, driver);
+                this.MakePersistence(itemsResult, driver);
                 
             } catch (Exception ex)
             {
                 SaveLog($"Thread {tx} método DoWork: " + ex.Message);
             } finally
             {
-                FinishWork();
+                FinishWork(driver);
             }
         }
 
-        protected abstract IEnumerable<IItemResult> GettingData(IItemInput itemInput);
-        protected abstract IItemInput CreateInput(string item);
-
-        public void FinishWork()
+        private IWebDriver InicializarDriver()
         {
-            _driver.Close();
-        }
-        public abstract void MakePersistence(IEnumerable<IItemResult> itemsResult);
+            ChromeOptions options = new()
+            {
+                PageLoadStrategy = PageLoadStrategy.Normal
+            };
 
-        private void NavigateToInitialPage()
+            options.AddArgument("no-sandbox");
+            options.AddArgument("headless");
+            options.AddArgument("--profile-directory=Default");
+            options.AddArgument("--disable-web-security");
+            options.AddArgument("--disable-gpu");
+            options.AddArgument("--start-maximized");
+            options.AddArgument("--ignore-certificate-errors");
+            options.AddArgument("--ignore-ssl-error");
+
+            options.AddExcludedArgument("enable-logging");
+
+            return new ChromeDriver(options);
+        }
+
+        protected abstract IEnumerable<IItemResult> GettingData(IItemInput itemInput, IWebDriver driver);
+        protected abstract IItemInput CreateInput(string item, IWebDriver driver);
+
+        public void FinishWork(IWebDriver driver)
+        {
+            driver.Close();
+        }
+        public abstract void MakePersistence(IEnumerable<IItemResult> itemsResult, IWebDriver driver);
+
+        private void NavigateToInitialPage(IWebDriver driver)
         {
             try
             {
-                if (!_driver.Url.Equals(_url))
-                    _driver.Navigate().GoToUrl(_url);
+                if (!driver.Url.Equals(_url))
+                    driver.Navigate().GoToUrl(_url);
             }
             catch (Exception e)
             {
