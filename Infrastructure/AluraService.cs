@@ -5,10 +5,15 @@ using Persistence;
 using System.Text.RegularExpressions;
 
 namespace Infrastructure
-{
+{   
+    /// <summary>
+    /// Classe responsável por fazer as tarefas do desafio
+    /// </summary>
     public class AluraService : SeleniumService
     {
-
+        /// <summary>
+        /// No construtor temos a url da alura
+        /// </summary>
         public AluraService() {
             this._url = "https://www.alura.com.br/";
         }
@@ -42,6 +47,12 @@ namespace Infrastructure
             } catch (Exception ex) { throw new Exception("Erro ao pegar as informacoes do curso: " + ex.Message); }
         }
 
+        /// <summary>
+        /// Método onde são realizadas todas as ações necessárias para pesquisar os resultados
+        /// </summary>
+        /// <param name="itemInput">Objeto com a entrada de dados</param>
+        /// <param name="driver">WebDriver sendo usado no service</param>
+        /// <exception cref="Exception">Exceção será lançada quando o webdriver por algum motivo não conseguir fazer a pesquisa</exception>
         private void SearchResults(IItemInput itemInput, IWebDriver driver)
         {
             try
@@ -65,6 +76,12 @@ namespace Infrastructure
             }
         }
 
+        /// <summary>
+        /// Método onde obtém as informações nos cards
+        /// </summary>
+        /// <param name="driver">WebDriver sendo usado no service</param>
+        /// <returns>Retorna objeto com as informações do card</returns>
+        /// <exception cref="Exception">Exceção lançada quando não consegue obter a informação no card</exception>
         private IEnumerable<ItemCard> GetCardsInformation(IWebDriver driver)
         {
             try
@@ -82,6 +99,13 @@ namespace Infrastructure
             } catch (Exception ex) { throw new Exception("Erro ao pegar informações os cards dos resultados: " + ex.Message); }
         }
 
+        /// <summary>
+        /// Método onde obtém as informações sobre o professor e a carga horária
+        /// </summary>
+        /// <param name="card">Parâmetro com o objeto do card</param>
+        /// <param name="driver">WebDriver sendo usado no service</param>
+        /// <returns>Retorna o objeto completo com as informações completas</returns>
+        /// <exception cref="Exception">Exceção lançada provavelmente quando tentar obter a informação de carga horária ou o nome do professor</exception>
         private IItemResult CatchResult(ItemCard card, IWebDriver driver)
         {
             try

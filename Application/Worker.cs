@@ -5,7 +5,10 @@ using Persistence;
 using Domain;
 
 namespace Application
-{
+{   
+    /// <summary>
+    /// Classe Worker da aplicação
+    /// </summary>
     public class Worker : BackgroundService
     {
         private readonly int _qtdThreads = 2;
@@ -19,6 +22,11 @@ namespace Application
             _args = args;
         }
 
+        /// <summary>
+        /// Método onde ocorrar o fluxo da aplicação
+        /// </summary>
+        /// <param name="stoppingToken"></param>
+        /// <returns></returns>
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             var queue = new Queue<string>(_args);

@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Persistence
 {
+    /// <summary>
+    /// Classe resposnável por fazer a persistencia dos logs
+    /// </summary>
     public class LogPersistence : DbAccess
     {
 

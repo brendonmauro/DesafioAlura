@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace Persistence
 {
+    /// <summary>
+    /// Classe responsável por fazer a persistência dos objetos obtidos no site explocaro
+    /// </summary>
     public class ItemResultPersistence : DbAccess
     {
         public void Insert(ItemResult itemResult)

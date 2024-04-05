@@ -2,6 +2,9 @@
 
 namespace Persistence
 {
+    /// <summary>
+    /// Classe responsável por fazer a conexão com o banco de dados
+    /// </summary>
     public class DbAccess
     {
         public NpgsqlConnection _connection;
