@@ -22,7 +22,7 @@ namespace Persistence
             {
                 _connection.Open();
                 command.Parameters.AddWithValue("@titulo", itemResult.Titulo);
-                command.Parameters.AddWithValue("@professor", itemResult.Titulo);
+                command.Parameters.AddWithValue("@professor", itemResult.Professor);
                 command.Parameters.AddWithValue("@carga_horaria", itemResult.CargaHoraria);
                 command.Parameters.AddWithValue("@descricao", itemResult.Descricao);
                 command.Parameters.AddWithValue("@date", DateTime.Now);

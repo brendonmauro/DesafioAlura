@@ -5,7 +5,7 @@ using Persistence;
 using System.Text.RegularExpressions;
 
 namespace Infrastructure
-{   
+{
     /// <summary>
     /// Classe responsável por fazer as tarefas do desafio
     /// </summary>
@@ -14,14 +14,19 @@ namespace Infrastructure
         /// <summary>
         /// No construtor temos a url da alura
         /// </summary>
-        public AluraService() {
+        public AluraService()
+        {
             this._url = "https://www.alura.com.br/";
         }
 
         public override void MakePersistence(IEnumerable<IItemResult> itemsResult, IWebDriver driver)
         {
-            ItemResultPersistence itemResultPersistence = new();
-            itemsResult.ToList().ForEach(item =>  itemResultPersistence.Insert((ItemResult)item));
+
+            Parallel.ForEach(itemsResult, item =>
+            {
+                ItemResultPersistence itemResultPersistence = new();
+                itemResultPersistence.Insert((ItemResult)item);
+            });
         }
 
         protected override IItemInput CreateInput(string item, IWebDriver driver)
@@ -41,10 +46,12 @@ namespace Infrastructure
                 var items = new List<IItemResult>();
                 foreach (var card in cards)
                 {
-                    items.Add(CatchResult(card, driver));
+                    var itemResult = CatchResult(card, driver);
+                    items.Add(itemResult);
                 }
                 return items;
-            } catch (Exception ex) { throw new Exception("Erro ao pegar as informacoes do curso: " + ex.Message); }
+            }
+            catch (Exception ex) { throw new Exception("Erro ao pegar as informacoes do curso: " + ex.Message); }
         }
 
         /// <summary>
@@ -64,13 +71,16 @@ namespace Infrastructure
 
                 var buttonShowOptions = driver.FindElement(By.ClassName("show-filter-options"));
                 buttonShowOptions.Click();
+                Thread.Sleep(200);
 
                 var buttonCurso = driver.FindElement(By.CssSelector("ul[id*=busca--filtros--tipos] li"));
                 buttonCurso.Click();
+                Thread.Sleep(200);
 
                 var buttonFiltrar = driver.FindElement(By.Id("busca--filtrar-resultados"));
                 buttonFiltrar.Click();
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception("Erro ao pesquisar o termo: " + ex.Message);
             }
@@ -88,7 +98,7 @@ namespace Infrastructure
             {
                 var cards = driver.FindElements(By.ClassName("busca-resultado"));
 
-                 var itemCards = cards.Select(card => new ItemCard
+                var itemCards = cards.Select(card => new ItemCard
                 {
                     Link = card.FindElement(By.ClassName("busca-resultado-link"))?.GetAttribute("href") ?? string.Empty,
                     Titulo = card.FindElement(By.ClassName("busca-resultado-nome"))?.Text ?? string.Empty,
@@ -96,7 +106,8 @@ namespace Infrastructure
                 }).ToList();
 
                 return itemCards;
-            } catch (Exception ex) { throw new Exception("Erro ao pegar informações os cards dos resultados: " + ex.Message); }
+            }
+            catch (Exception ex) { throw new Exception("Erro ao pegar informações os cards dos resultados: " + ex.Message); }
         }
 
         /// <summary>
@@ -112,20 +123,33 @@ namespace Infrastructure
             {
                 driver.Navigate().GoToUrl(card.Link);
 
-                var cargaHorariaText = driver.FindElement(By.ClassName("course-card-wrapper-infos")).Text ?? "0";
+                string cargaHorariaText;
+                string professor;
+
+                try
+                {
+                    cargaHorariaText = driver.FindElement(By.ClassName("course-card-wrapper-infos"))?.Text ?? "0";
+                }
+                catch { cargaHorariaText = "0"; }
+
+                try
+                {
+                    professor = driver.FindElement(By.CssSelector("h3[class*=instructor-title--name]"))?.Text ?? string.Empty;
+                }
+                catch { professor = string.Empty; }
 
                 IItemResult itemResult = new ItemResult
                 {
                     Titulo = card.Titulo,
-                    Professor = driver.FindElement(By.ClassName("instructor-title--name"))?.Text ?? string.Empty,
+                    Professor = professor,
                     CargaHoraria = Convert.ToInt32(Regex.Replace(cargaHorariaText, "[^0-9]", "")),
                     Descricao = card.Descricao
                 };
                 driver.Navigate().Back();
 
-
                 return itemResult;
-            } catch (Exception ex) { throw new Exception("Erro ao passar as informacoes para o objeto: " + ex.Message); }
+            }
+            catch (Exception ex) { throw new Exception("Erro ao passar as informacoes para o objeto: " + ex.Message); }
         }
     }
 }

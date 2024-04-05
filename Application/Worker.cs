@@ -11,7 +11,7 @@ namespace Application
     /// </summary>
     public class Worker : BackgroundService
     {
-        private readonly int _qtdThreads = 2;
+        private readonly int _qtdThreads = 4;
         private ISeleniumService _seleniumService;
         private string[] _args;
 

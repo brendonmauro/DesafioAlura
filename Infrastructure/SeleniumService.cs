@@ -21,18 +21,20 @@ namespace Infrastructure
         /// <param name="item">parâmetro de entrada de dados</param>
         public void DoWork(int tx, string item)
         {
-            IWebDriver driver = this.InicializarDriver();
+            IWebDriver driver = this.InitializeDriver();
             try
             {
                 IItemInput itemInput = this.CreateInput(item, driver);
                 this.NavigateToInitialPage(driver);
                 IEnumerable<IItemResult> itemsResult = this.GettingData(itemInput, driver);
                 this.MakePersistence(itemsResult, driver);
-                
-            } catch (Exception ex)
+
+            }
+            catch (Exception ex)
             {
                 SaveLog($"Thread {tx} método DoWork: " + ex.Message);
-            } finally
+            }
+            finally
             {
                 FinishWork(driver);
             }
@@ -42,25 +44,29 @@ namespace Infrastructure
         /// Método responsável pela inialização do chromedriver com as suas opções
         /// </summary>
         /// <returns>Retorna o WebDriver</returns>
-        private IWebDriver InicializarDriver()
+        private IWebDriver InitializeDriver()
         {
-            ChromeOptions options = new()
+            try
             {
-                PageLoadStrategy = PageLoadStrategy.Normal
-            };
+                ChromeOptions options = new()
+                {
+                    PageLoadStrategy = PageLoadStrategy.Normal
+                };
 
-            options.AddArgument("no-sandbox");
-            options.AddArgument("headless");
-            options.AddArgument("--profile-directory=Default");
-            options.AddArgument("--disable-web-security");
-            options.AddArgument("--disable-gpu");
-            options.AddArgument("--start-maximized");
-            options.AddArgument("--ignore-certificate-errors");
-            options.AddArgument("--ignore-ssl-error");
+                options.AddArgument("no-sandbox");
+                options.AddArgument("headless");
+                options.AddArgument("--profile-directory=Default");
+                options.AddArgument("--disable-web-security");
+                options.AddArgument("--disable-gpu");
+                options.AddArgument("--start-maximized");
+                options.AddArgument("--ignore-certificate-errors");
+                options.AddArgument("--ignore-ssl-error");
 
-            options.AddExcludedArgument("enable-logging");
+                options.AddExcludedArgument("enable-logging");
 
-            return new ChromeDriver(options);
+                return new ChromeDriver(options);
+            }
+            catch (Exception ex) { throw ex; }
         }
 
         /// <summary>
@@ -127,7 +133,7 @@ namespace Infrastructure
                 LogPersistence logPersistence = new();
                 logPersistence.Insert(new Log(message));
             }
-            catch (Exception ex) { throw new Exception(ex.Message); }
+            catch (Exception ex) { throw ex; }
         }
     }
 }

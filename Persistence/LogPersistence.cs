@@ -24,7 +24,7 @@ namespace Persistence
                 using (NpgsqlCommand command = new NpgsqlCommand(insertQuery, _connection))
                 {
                     _connection.Open();
-                    command.Parameters.AddWithValue("@text", log.Text.Substring(0, log.Text.Length < 250 ? log.Text.Length : 250));
+                    command.Parameters.AddWithValue("@text", log.Text.Substring(0, log.Text.Length < 995 ? log.Text.Length : 995));
                     command.Parameters.AddWithValue("@date", log.Date);
                     command.ExecuteNonQuery();
                     _connection.Close();
